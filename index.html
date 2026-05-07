@@ -13,10 +13,99 @@
     min-height: 100vh;
     color: #1f2937;
     padding: 20px;
+    overflow-x: hidden;
   }
-  .wrap { max-width: 680px; margin: 0 auto; }
+  .wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
+
+  /* ===== HEART INTRO OVERLAY ===== */
+  .heart-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #ffe0ec 0%, #fecaca 50%, #fbcfe8 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+  .heart-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .big-heart {
+    font-size: 180px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(220, 38, 38, 0.4));
+    user-select: none;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.15); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.15); }
+  }
+  .heart-message {
+    font-size: 28px;
+    font-weight: 600;
+    color: #be123c;
+    margin-top: 24px;
+    text-align: center;
+    animation: fadeInUp 1.5s ease 0.5s both;
+    padding: 0 20px;
+  }
+  .heart-sub {
+    font-size: 16px;
+    color: #9f1239;
+    margin-top: 8px;
+    animation: fadeInUp 1.5s ease 1s both;
+  }
+  .heart-btn {
+    margin-top: 32px;
+    padding: 14px 32px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
+    animation: fadeInUp 1.5s ease 1.5s both, gentlePulse 2s ease-in-out 3s infinite;
+    transition: transform 0.15s;
+  }
+  .heart-btn:hover { transform: scale(1.05); }
+  .heart-btn:active { transform: scale(0.97); }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes gentlePulse {
+    0%, 100% { box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4); }
+    50% { box-shadow: 0 4px 24px rgba(220, 38, 38, 0.7); }
+  }
+
+  /* ===== FALLING HEARTS ===== */
+  .falling-heart {
+    position: fixed;
+    top: -40px;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 1;
+    animation: fallDown linear forwards;
+    user-select: none;
+  }
+  @keyframes fallDown {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== MAIN PAGE STYLES ===== */
   .card {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 16px;
@@ -98,10 +187,19 @@
 </style>
 </head>
 <body>
+
+<!-- ===== HEART INTRO OVERLAY ===== -->
+<div class="heart-overlay" id="heart-overlay">
+  <div class="big-heart">❤️</div>
+  <div class="heart-message">happy birthday, my favorite person</div>
+  <div class="heart-sub">i made something just for you 💕</div>
+  <button class="heart-btn" onclick="dismissIntro()">tap to continue →</button>
+</div>
+
 <div class="wrap">
 
   <div class="card" id="home-screen">
-    <h1 class="title">happy birthday <span id="name-display">Dear Maryam</span> 🎈</h1>
+    <h1 class="title">happy birthday <span id="name-display">bestie</span> 🎈</h1>
     <p class="sub">i made this whole little thing just for you. tap a tile to open a surprise.</p>
     <div style="text-align:center;margin:8px 0 16px">
       <span class="balloon" onclick="popBalloon(this)">🎈</span>
@@ -110,7 +208,7 @@
       <span class="balloon" onclick="popBalloon(this)">🎈</span>
     </div>
     <div style="text-align:center;margin-bottom:8px">
-      <input class="name-input" id="name-input" placeholder="Sweet Mariyam" />
+      <input class="name-input" id="name-input" placeholder="put their name here" />
       <button class="btn" onclick="setName()">set name</button>
     </div>
     <div class="grid">
@@ -140,7 +238,7 @@
     <div class="gift-box" id="gift-emoji" onclick="shakeGift()">🎁</div>
     <div id="gift-reveal" style="display:none">
       <div class="compliment-box" style="background:#d1fae5;color:#065f46">
-        You're the prettiest girl i met in my whole life. 💛<br>(this gift is one full year of unlimited best-friend privileges)
+        you're stuck with me forever, sorry not sorry 💛<br>(this gift is one full year of unlimited best-friend privileges)
       </div>
     </div>
   </div>
@@ -165,11 +263,11 @@
 
 i don't say this enough, but my life is so much better with you in it. you're the person i want to text when something good happens, the one i call when something falls apart, and the only one who actually laughs at my unfunny jokes.
 
-thank you for every late-night talk.
+thank you for every late-night talk, every snack we've shared, every plan we've made and remade, and every time you've shown up for me without me even asking.
 
 i hope this year brings you everything you deserve — and you deserve a LOT.
 
-happy birthday. I love you. 💛
+happy birthday. i love you. 💛
 
 – your favorite person (me, obviously)</div>
   </div>
@@ -177,6 +275,41 @@ happy birthday. I love you. 💛
 </div>
 
 <script>
+// ===== INTRO HEART OVERLAY =====
+function dismissIntro(){
+  document.getElementById('heart-overlay').classList.add('hidden');
+}
+
+// auto-dismiss after 6 seconds if user doesn't click
+setTimeout(() => {
+  const overlay = document.getElementById('heart-overlay');
+  if(overlay && !overlay.classList.contains('hidden')){
+    // don't auto-dismiss, let her enjoy it — just leave the button
+  }
+}, 6000);
+
+// ===== CONTINUOUS HEART SHOWER =====
+const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '♥️'];
+function spawnHeart(){
+  const heart = document.createElement('div');
+  heart.className = 'falling-heart';
+  heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = (16 + Math.random() * 20) + 'px';
+  const duration = 5 + Math.random() * 5; // 5-10 seconds
+  heart.style.animationDuration = duration + 's';
+  heart.style.opacity = 0.6 + Math.random() * 0.4;
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), duration * 1000 + 200);
+}
+// spawn a heart every 400ms forever
+setInterval(spawnHeart, 400);
+// spawn a few right away so it doesn't start empty
+for(let i = 0; i < 8; i++){
+  setTimeout(spawnHeart, i * 200);
+}
+
+// ===== MAIN PAGE LOGIC =====
 let opened = new Set();
 let bestieName = "bestie";
 
