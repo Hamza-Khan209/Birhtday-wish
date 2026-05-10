@@ -20,6 +20,139 @@
   }
   .wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
 
+  /* ===== DARK INTRO OVERLAY ===== */
+  .dark-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+  }
+  .dark-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .lights-btn {
+    padding: 18px 40px;
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 999px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    font-family: inherit;
+    animation: btnGlow 2s ease-in-out infinite;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 10;
+  }
+  .lights-btn:hover {
+    border-color: rgba(255,255,255,0.8);
+    text-shadow: 0 0 12px rgba(255,255,255,0.6);
+  }
+  @keyframes btnGlow {
+    0%, 100% { box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+    50% { box-shadow: 0 0 30px rgba(255,255,255,0.25); }
+  }
+
+  /* ===== BULB WIRE (string lights) ===== */
+  .bulb-wire {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    z-index: 2001;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .bulb-wire.visible { opacity: 1; }
+
+  .wire-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .bulb-container {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 0 20px;
+  }
+
+  .bulb-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.3);
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .bulb-item.on {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .bulb-stem {
+    width: 3px;
+    background: #555;
+    border-radius: 1px;
+  }
+
+  .bulb-glow {
+    width: 22px;
+    height: 30px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    position: relative;
+    animation: bulbFlicker 3s ease-in-out infinite alternate;
+  }
+  .bulb-glow::after {
+    content: "";
+    position: absolute;
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
+    border-radius: inherit;
+    background: inherit;
+    opacity: 0.3;
+    filter: blur(10px);
+  }
+
+  .bulb-cap {
+    width: 14px;
+    height: 8px;
+    background: #888;
+    border-radius: 2px 2px 4px 4px;
+  }
+
+  @keyframes bulbFlicker {
+    0%   { filter: brightness(1); }
+    50%  { filter: brightness(1.3); }
+    100% { filter: brightness(1); }
+  }
+
+  /* Bulb colors */
+  .bulb-red    .bulb-glow { background: radial-gradient(circle at 40% 35%, #ff8a8a, #e53e3e); box-shadow: 0 4px 20px rgba(229,62,62,0.6); }
+  .bulb-yellow .bulb-glow { background: radial-gradient(circle at 40% 35%, #fde68a, #f59e0b); box-shadow: 0 4px 20px rgba(245,158,11,0.6); }
+  .bulb-green  .bulb-glow { background: radial-gradient(circle at 40% 35%, #86efac, #22c55e); box-shadow: 0 4px 20px rgba(34,197,94,0.6); }
+  .bulb-blue   .bulb-glow { background: radial-gradient(circle at 40% 35%, #93c5fd, #3b82f6); box-shadow: 0 4px 20px rgba(59,130,246,0.6); }
+  .bulb-pink   .bulb-glow { background: radial-gradient(circle at 40% 35%, #f9a8d4, #ec4899); box-shadow: 0 4px 20px rgba(236,72,153,0.6); }
+  .bulb-purple .bulb-glow { background: radial-gradient(circle at 40% 35%, #c4b5fd, #8b5cf6); box-shadow: 0 4px 20px rgba(139,92,246,0.6); }
+
+  /* Dark overlay brightening when lights come on */
+  .dark-overlay.lights-on {
+    background: radial-gradient(ellipse at top center, rgba(30,20,40,0.75) 0%, rgba(0,0,0,0.92) 70%);
+  }
+
   /* ===== HEART INTRO OVERLAY ===== */
   .heart-overlay {
     position: fixed;
@@ -182,7 +315,6 @@
     opacity: 0;
     pointer-events: none;
   }
-  /* When cut: main cake shifts left, slice flies right with a little spin */
   .cake-stage.cut .cake-main {
     transform: translateX(-30px);
   }
@@ -247,6 +379,20 @@
 </style>
 </head>
 <body>
+
+<!-- ===== DARK INTRO OVERLAY ===== -->
+<div class="dark-overlay" id="dark-overlay">
+  <button class="lights-btn" onclick="turnOnLights()">💡 Click here to turn on the lights</button>
+</div>
+
+<!-- ===== BULB STRING LIGHTS ===== -->
+<div class="bulb-wire" id="bulb-wire">
+  <svg class="wire-svg" viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,10 Q100,55 200,30 Q300,5 400,40 Q500,75 600,35 Q700,-5 800,40 Q900,80 1000,30 Q1100,0 1200,20"
+          fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+  <div class="bulb-container" id="bulb-container"></div>
+</div>
 
 <!-- ===== HEART INTRO OVERLAY ===== -->
 <div class="heart-overlay" id="heart-overlay">
@@ -338,6 +484,65 @@ Happy Birthday. i love you. 💛
 </div>
 
 <script>
+// ===== DARK OVERLAY — LIGHT BULBS =====
+const bulbColors = ['bulb-red','bulb-yellow','bulb-green','bulb-blue','bulb-pink','bulb-purple'];
+const bulbCount = 12;
+const bulbContainer = document.getElementById('bulb-container');
+
+// Pre-create bulbs (hidden)
+for(let i = 0; i < bulbCount; i++){
+  const item = document.createElement('div');
+  item.className = 'bulb-item ' + bulbColors[i % bulbColors.length];
+
+  // Vary stem height so bulbs hang at different levels (matches wire curve feel)
+  const stemH = 20 + Math.sin((i / bulbCount) * Math.PI * 2) * 18 + Math.random() * 10;
+  item.innerHTML =
+    '<div class="bulb-stem" style="height:' + stemH + 'px"></div>' +
+    '<div class="bulb-cap"></div>' +
+    '<div class="bulb-glow"></div>';
+
+  // Stagger the flicker animation so they don't all pulse in sync
+  const glow = item.querySelector('.bulb-glow');
+  glow.style.animationDelay = (Math.random() * 3).toFixed(1) + 's';
+
+  bulbContainer.appendChild(item);
+}
+
+function turnOnLights(){
+  const darkOverlay = document.getElementById('dark-overlay');
+  const bulbWire = document.getElementById('bulb-wire');
+  const bulbs = document.querySelectorAll('.bulb-item');
+
+  // Hide the button
+  document.querySelector('.lights-btn').style.opacity = '0';
+  document.querySelector('.lights-btn').style.pointerEvents = 'none';
+
+  // Show wire
+  bulbWire.classList.add('visible');
+
+  // Brighten the background a little
+  darkOverlay.classList.add('lights-on');
+
+  // Turn on bulbs one by one with a cascading delay
+  bulbs.forEach((b, i) => {
+    setTimeout(() => {
+      b.classList.add('on');
+    }, 120 * i);
+  });
+
+  // After all bulbs are on, fade out the dark overlay to reveal the heart screen
+  const totalBulbTime = 120 * bulbCount + 600;
+  setTimeout(() => {
+    darkOverlay.classList.add('hidden');
+    // Keep the bulb wire visible on top of the heart overlay briefly, then fade it
+    setTimeout(() => {
+      bulbWire.style.transition = 'opacity 1.5s ease';
+      bulbWire.style.opacity = '0';
+      setTimeout(() => bulbWire.remove(), 1600);
+    }, 2000);
+  }, totalBulbTime);
+}
+
 // ===== Fade in cake background once loaded =====
 (function loadCakeBackground(){
   const overlay = document.getElementById('heart-overlay');
@@ -367,48 +572,37 @@ function spawnHeart(){
 setInterval(spawnHeart, 400);
 for(let i = 0; i < 8; i++) setTimeout(spawnHeart, i * 200);
 
-// ===== HAPPY BIRTHDAY TUNE (Web Audio API — generated, no audio file needed) =====
+// ===== HAPPY BIRTHDAY TUNE =====
 let audioCtx = null;
 function playHappyBirthdayTune(){
   try {
     if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    // Note frequencies (Hz) — Happy Birthday in C major
-    const C4=261.63, D4=293.66, E4=329.63, F4=349.23, G4=392.00, A4=440.00, B4flat=466.16, C5=523.25, D5=587.33, F5=698.46;
-
-    // [frequency, duration in beats]
+    const C4=261.63, D4=293.66, E4=329.63, F4=349.23, G4=392.00, A4=440.00, B4flat=466.16, C5=523.25;
     const melody = [
       [C4, 0.75], [C4, 0.25], [D4, 1], [C4, 1], [F4, 1], [E4, 2],
       [C4, 0.75], [C4, 0.25], [D4, 1], [C4, 1], [G4, 1], [F4, 2],
       [C4, 0.75], [C4, 0.25], [C5, 1], [A4, 1], [F4, 1], [E4, 1], [D4, 2],
       [B4flat, 0.75], [B4flat, 0.25], [A4, 1], [F4, 1], [G4, 1], [F4, 2]
     ];
-
-    const beatDuration = 0.4; // seconds per beat
+    const beatDuration = 0.4;
     let startTime = audioCtx.currentTime + 0.1;
-
     melody.forEach(([freq, beats]) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = 'triangle'; // softer sound, like a music box
+      osc.type = 'triangle';
       osc.frequency.value = freq;
       const noteDuration = beats * beatDuration;
-
-      // Volume envelope — quick attack, gentle release for a nice tone
       gain.gain.setValueAtTime(0, startTime);
       gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
       gain.gain.linearRampToValueAtTime(0.15, startTime + noteDuration * 0.7);
       gain.gain.linearRampToValueAtTime(0, startTime + noteDuration);
-
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start(startTime);
       osc.stop(startTime + noteDuration);
       startTime += noteDuration;
     });
-  } catch(e) {
-    console.log('Audio playback failed:', e);
-  }
+  } catch(e) { console.log('Audio playback failed:', e); }
 }
 
 // ===== MAIN PAGE LOGIC =====
@@ -453,24 +647,10 @@ for(let i = 0; i < 5; i++){
     c.classList.add('out');
     if(document.querySelectorAll('.candle:not(.out)').length === 0 && !cakeCelebrationTriggered){
       cakeCelebrationTriggered = true;
-
-      // 1. Show wish message
       document.getElementById('wish-msg').textContent = '✨ wish granted ✨';
-
-      // 2. Cut the cake (slice animation) after a tiny pause
-      setTimeout(() => {
-        document.getElementById('cake-stage').classList.add('cut');
-      }, 400);
-
-      // 3. Play the happy birthday tune
-      setTimeout(() => {
-        playHappyBirthdayTune();
-      }, 600);
-
-      // 4. Confetti for extra celebration
-      setTimeout(() => {
-        confettiBlast();
-      }, 800);
+      setTimeout(() => { document.getElementById('cake-stage').classList.add('cut'); }, 400);
+      setTimeout(() => { playHappyBirthdayTune(); }, 600);
+      setTimeout(() => { confettiBlast(); }, 800);
     }
   };
   candlesEl.appendChild(c);
