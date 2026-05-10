@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Happy Birthday 🎈</title>
+
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=1600&q=80" />
+
 <style>
   * { box-sizing: border-box; }
   body {
@@ -16,17 +19,12 @@
     overflow-x: hidden;
   }
   .wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
- 
-  /* ===== HEART INTRO OVERLAY WITH CAKE BACKGROUND ===== */
+
+  /* ===== HEART INTRO OVERLAY ===== */
   .heart-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image:
-      linear-gradient(135deg, rgba(255, 224, 236, 0.75) 0%, rgba(254, 202, 202, 0.7) 50%, rgba(251, 207, 232, 0.75) 100%),
-      url('https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=1600&q=80');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: linear-gradient(135deg, #ffe0ec 0%, #fecaca 50%, #fbcfe8 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,10 +32,29 @@
     z-index: 1000;
     transition: opacity 1s ease, visibility 1s ease;
   }
-  .heart-overlay.hidden {
+  .heart-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     opacity: 0;
-    visibility: hidden;
+    transition: opacity 1.2s ease;
+    z-index: 0;
   }
+  .heart-overlay.bg-loaded::before { opacity: 1; }
+  .heart-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 224, 236, 0.7) 0%, rgba(254, 202, 202, 0.65) 50%, rgba(251, 207, 232, 0.7) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .heart-overlay > * { position: relative; z-index: 2; }
+  .heart-overlay.hidden { opacity: 0; visibility: hidden; }
   .big-heart {
     font-size: 180px;
     animation: heartbeat 1.2s ease-in-out infinite;
@@ -51,35 +68,25 @@
     75% { transform: scale(1.15); }
   }
   .heart-message {
-    font-size: 32px;
-    font-weight: 700;
-    color: #be123c;
-    margin-top: 24px;
-    text-align: center;
-    animation: fadeInUp 1.5s ease 0.5s both;
+    font-size: 32px; font-weight: 700; color: #be123c;
+    margin-top: 24px; text-align: center;
+    animation: fadeInUp 1s ease 0.2s both;
     padding: 0 20px;
     text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8);
   }
   .heart-sub {
-    font-size: 18px;
-    font-weight: 500;
-    color: #9f1239;
+    font-size: 18px; font-weight: 500; color: #9f1239;
     margin-top: 8px;
-    animation: fadeInUp 1.5s ease 1s both;
+    animation: fadeInUp 1s ease 0.5s both;
     text-shadow: 0 2px 8px rgba(255, 255, 255, 0.7);
   }
   .heart-btn {
-    margin-top: 32px;
-    padding: 14px 32px;
-    background: #dc2626;
-    color: white;
-    border: none;
-    border-radius: 999px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
+    margin-top: 32px; padding: 14px 32px;
+    background: #dc2626; color: white;
+    border: none; border-radius: 999px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
     box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
-    animation: fadeInUp 1.5s ease 1.5s both, gentlePulse 2s ease-in-out 3s infinite;
+    animation: fadeInUp 1s ease 0.8s both, gentlePulse 2s ease-in-out 2s infinite;
     transition: transform 0.15s;
   }
   .heart-btn:hover { transform: scale(1.05); }
@@ -92,35 +99,28 @@
     0%, 100% { box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4); }
     50% { box-shadow: 0 4px 24px rgba(220, 38, 38, 0.7); }
   }
- 
+
   /* ===== FALLING HEARTS ===== */
   .falling-heart {
-    position: fixed;
-    top: -40px;
-    font-size: 24px;
-    pointer-events: none;
-    z-index: 1;
+    position: fixed; top: -40px; font-size: 24px;
+    pointer-events: none; z-index: 1;
     animation: fallDown linear forwards;
     user-select: none;
   }
   @keyframes fallDown {
     0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
+    10% { opacity: 1; } 90% { opacity: 1; }
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
- 
-  /* ===== MAIN PAGE STYLES — LOVE PINK CARDS ===== */
+
+  /* ===== MAIN PAGE STYLES — LOVE PINK ===== */
   .card {
     background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
     backdrop-filter: blur(8px);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 16px;
+    border-radius: 16px; padding: 24px; margin-bottom: 16px;
     box-shadow: 0 4px 20px rgba(190, 24, 93, 0.15);
     border: 1px solid rgba(244, 114, 182, 0.3);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .title { font-size: 28px; font-weight: 600; margin: 0 0 6px; text-align: center; color: #831843; }
   .sub { font-size: 14px; color: #9d174d; text-align: center; margin: 0 0 16px; }
@@ -145,7 +145,9 @@
   .tile.opened { opacity: 0.55; background: rgba(255, 255, 255, 0.4); }
   .screen { display: none; min-height: 200px; text-align: center; }
   .screen.active { display: block; }
-  .candle { display: inline-block; width: 12px; height: 36px; background: #fde68a; border-radius: 3px; position: relative; margin: 0 4px; vertical-align: bottom; }
+
+  /* ===== CANDLES ===== */
+  .candle { display: inline-block; width: 12px; height: 36px; background: #fde68a; border-radius: 3px; position: relative; margin: 0 4px; vertical-align: bottom; cursor: pointer; }
   .candle::before {
     content: ""; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
     width: 10px; height: 16px; background: radial-gradient(circle, #fbbf24, #f59e0b);
@@ -155,14 +157,45 @@
   .candle.out::before { display: none; }
   @keyframes flicker { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-50%) scale(1.15); } }
   .candles-row { text-align: center; margin: 16px 0; height: 56px; }
-  .cake { font-size: 80px; text-align: center; margin: 8px 0; }
+
+  /* ===== CAKE WITH SLICE ANIMATION ===== */
+  .cake-stage {
+    position: relative;
+    width: 200px;
+    height: 120px;
+    margin: 16px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cake-main, .cake-slice {
+    font-size: 80px;
+    line-height: 1;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+    user-select: none;
+  }
+  .cake-slice {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* When cut: main cake shifts left, slice flies right with a little spin */
+  .cake-stage.cut .cake-main {
+    transform: translateX(-30px);
+  }
+  .cake-stage.cut .cake-slice {
+    opacity: 1;
+    transform: translate(60px, -10px) rotate(20deg);
+  }
+
   .compliment-box {
-    background: rgba(255, 255, 255, 0.8);
-    color: #831843;
+    background: rgba(255, 255, 255, 0.8); color: #831843;
     border: 1px solid rgba(244, 114, 182, 0.4);
-    padding: 18px 20px;
-    border-radius: 12px; margin: 16px auto; font-size: 16px;
-    line-height: 1.6; min-height: 80px; max-width: 460px;
+    padding: 18px 20px; border-radius: 12px; margin: 16px auto;
+    font-size: 16px; line-height: 1.6; min-height: 80px; max-width: 460px;
     display: flex; align-items: center; justify-content: center; text-align: center;
   }
   .quiz-q { font-size: 16px; font-weight: 500; margin: 16px 0; color: #831843; }
@@ -181,8 +214,7 @@
   .confetti { position: fixed; width: 10px; height: 10px; pointer-events: none; animation: fall 3s linear forwards; z-index: 9999; }
   @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
   .letter {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 24px; border-radius: 12px;
+    background: rgba(255, 255, 255, 0.8); padding: 24px; border-radius: 12px;
     font-family: Georgia, serif; font-size: 16px; line-height: 1.8;
     text-align: left; max-width: 520px; margin: 16px auto;
     white-space: pre-line; border: 1px solid rgba(244, 114, 182, 0.4);
@@ -202,10 +234,20 @@
     background: rgba(255, 255, 255, 0.8); color: #831843;
   }
   .name-input::placeholder { color: #be185d; opacity: 0.6; }
+
+  .wish-msg-big {
+    font-size: 18px; font-weight: 600; color: #be123c;
+    margin-top: 12px; min-height: 28px;
+    animation: wishGlow 0.6s ease;
+  }
+  @keyframes wishGlow {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
 </style>
 </head>
 <body>
- 
+
 <!-- ===== HEART INTRO OVERLAY ===== -->
 <div class="heart-overlay" id="heart-overlay">
   <div class="big-heart">❤️</div>
@@ -213,9 +255,9 @@
   <div class="heart-sub">I made something just for you 💕</div>
   <button class="heart-btn" onclick="dismissIntro()">Tap to continue →</button>
 </div>
- 
+
 <div class="wrap">
- 
+
   <div class="card" id="home-screen">
     <h1 class="title">Happy Birthday <span id="name-display">Love</span> 🎈</h1>
     <p class="sub">I made this whole little thing just for you. tap a tile to open a surprise.</p>
@@ -239,16 +281,19 @@
     </div>
     <p class="progress" id="progress">0 of 5 surprises opened</p>
   </div>
- 
+
   <div class="card screen" id="cake-screen">
     <button class="btn btn-ghost back-btn" onclick="goHome()">← back</button>
     <h2 class="title" style="margin-top:8px">make a wish 🎂</h2>
     <p class="sub">click each candle to blow it out</p>
     <div class="candles-row" id="candles"></div>
-    <div class="cake">🎂</div>
-    <p id="wish-msg" style="font-size:14px;color:#9d174d;min-height:24px"></p>
+    <div class="cake-stage" id="cake-stage">
+      <span class="cake-main">🎂</span>
+      <span class="cake-slice">🍰</span>
+    </div>
+    <p id="wish-msg" class="wish-msg-big"></p>
   </div>
- 
+
   <div class="card screen" id="gift-screen">
     <button class="btn btn-ghost back-btn" onclick="goHome()">← back</button>
     <h2 class="title" style="margin-top:8px">a little gift 🎁</h2>
@@ -260,43 +305,52 @@
       </div>
     </div>
   </div>
- 
+
   <div class="card screen" id="quiz-screen">
     <button class="btn btn-ghost back-btn" onclick="goHome()">← back</button>
     <h2 class="title" style="margin-top:8px">how well do you know us? 🧠</h2>
     <div id="quiz-body"></div>
   </div>
- 
+
   <div class="card screen" id="compliment-screen">
     <button class="btn btn-ghost back-btn" onclick="goHome()">← back</button>
     <h2 class="title" style="margin-top:8px">a compliment for you 💌</h2>
     <div class="compliment-box" id="compliment-text">tap the button for a fresh one</div>
     <button class="btn" onclick="newCompliment()">give me another</button>
   </div>
- 
+
   <div class="card screen" id="letter-screen">
     <button class="btn btn-ghost back-btn" onclick="goHome()">← back</button>
     <h2 class="title" style="margin-top:8px">a letter for you 📜</h2>
     <div class="letter">Dear Bestie,
- 
+
 i don't say this enough, but my life is so much better with you in it. you're the person i want to text when something good happens, the one i call when something falls apart, and the only one who actually laughs at my unfunny jokes.
- 
+
 thank you for every late-night talk.
- 
+
 I hope this year brings you everything you deserve — and you deserve a LOT.
- 
+
 Happy Birthday. i love you. 💛
- 
+
 – your favorite person (me, obviously)</div>
   </div>
- 
+
 </div>
- 
+
 <script>
+// ===== Fade in cake background once loaded =====
+(function loadCakeBackground(){
+  const overlay = document.getElementById('heart-overlay');
+  const img = new Image();
+  img.onload = () => overlay.classList.add('bg-loaded');
+  img.src = 'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=1600&q=80';
+})();
+
 function dismissIntro(){
   document.getElementById('heart-overlay').classList.add('hidden');
 }
- 
+
+// ===== HEART SHOWER =====
 const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '♥️'];
 function spawnHeart(){
   const heart = document.createElement('div');
@@ -311,18 +365,61 @@ function spawnHeart(){
   setTimeout(() => heart.remove(), duration * 1000 + 200);
 }
 setInterval(spawnHeart, 400);
-for(let i = 0; i < 8; i++){
-  setTimeout(spawnHeart, i * 200);
+for(let i = 0; i < 8; i++) setTimeout(spawnHeart, i * 200);
+
+// ===== HAPPY BIRTHDAY TUNE (Web Audio API — generated, no audio file needed) =====
+let audioCtx = null;
+function playHappyBirthdayTune(){
+  try {
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Note frequencies (Hz) — Happy Birthday in C major
+    const C4=261.63, D4=293.66, E4=329.63, F4=349.23, G4=392.00, A4=440.00, B4flat=466.16, C5=523.25, D5=587.33, F5=698.46;
+
+    // [frequency, duration in beats]
+    const melody = [
+      [C4, 0.75], [C4, 0.25], [D4, 1], [C4, 1], [F4, 1], [E4, 2],
+      [C4, 0.75], [C4, 0.25], [D4, 1], [C4, 1], [G4, 1], [F4, 2],
+      [C4, 0.75], [C4, 0.25], [C5, 1], [A4, 1], [F4, 1], [E4, 1], [D4, 2],
+      [B4flat, 0.75], [B4flat, 0.25], [A4, 1], [F4, 1], [G4, 1], [F4, 2]
+    ];
+
+    const beatDuration = 0.4; // seconds per beat
+    let startTime = audioCtx.currentTime + 0.1;
+
+    melody.forEach(([freq, beats]) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle'; // softer sound, like a music box
+      osc.frequency.value = freq;
+      const noteDuration = beats * beatDuration;
+
+      // Volume envelope — quick attack, gentle release for a nice tone
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
+      gain.gain.linearRampToValueAtTime(0.15, startTime + noteDuration * 0.7);
+      gain.gain.linearRampToValueAtTime(0, startTime + noteDuration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + noteDuration);
+      startTime += noteDuration;
+    });
+  } catch(e) {
+    console.log('Audio playback failed:', e);
+  }
 }
- 
+
+// ===== MAIN PAGE LOGIC =====
 let opened = new Set();
 let bestieName = "bestie";
- 
+
 function setName(){
   const v = document.getElementById('name-input').value.trim();
   if(v){ bestieName = v; document.getElementById('name-display').textContent = v; }
 }
- 
+
 function openScreen(name){
   document.getElementById('home-screen').style.display = 'none';
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -335,30 +432,50 @@ function openScreen(name){
   }
   if(name === 'quiz') buildQuiz();
 }
- 
+
 function goHome(){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('home-screen').style.display = 'block';
 }
- 
+
 function updateProgress(){
   document.getElementById('progress').textContent = opened.size + ' of 5 surprises opened';
   if(opened.size >= 5) confettiBlast();
 }
- 
+
+// ===== CANDLES + CAKE CUT + TUNE =====
+let cakeCelebrationTriggered = false;
 const candlesEl = document.getElementById('candles');
 for(let i = 0; i < 5; i++){
   const c = document.createElement('span');
   c.className = 'candle';
   c.onclick = () => {
     c.classList.add('out');
-    if(document.querySelectorAll('.candle:not(.out)').length === 0){
-      document.getElementById('wish-msg').textContent = 'wish granted ✨ (i made sure of it)';
+    if(document.querySelectorAll('.candle:not(.out)').length === 0 && !cakeCelebrationTriggered){
+      cakeCelebrationTriggered = true;
+
+      // 1. Show wish message
+      document.getElementById('wish-msg').textContent = '✨ wish granted ✨';
+
+      // 2. Cut the cake (slice animation) after a tiny pause
+      setTimeout(() => {
+        document.getElementById('cake-stage').classList.add('cut');
+      }, 400);
+
+      // 3. Play the happy birthday tune
+      setTimeout(() => {
+        playHappyBirthdayTune();
+      }, 600);
+
+      // 4. Confetti for extra celebration
+      setTimeout(() => {
+        confettiBlast();
+      }, 800);
     }
   };
   candlesEl.appendChild(c);
 }
- 
+
 let giftTaps = 0;
 function shakeGift(){
   giftTaps++;
@@ -370,7 +487,7 @@ function shakeGift(){
     document.getElementById('gift-reveal').style.display = 'block';
   }
 }
- 
+
 const quizQs = [
   { q: "what's the most iconic thing about our friendship?", opts: ["the inside jokes", "literally everything", "how we finish each other's sentences"] },
   { q: "if we were a duo, we'd be...", opts: ["chaos and more chaos", "peanut butter & jelly", "both, simultaneously"] },
@@ -398,7 +515,7 @@ function showQuiz(){
     opts.appendChild(b);
   });
 }
- 
+
 const compliments = [
   "you make ordinary days feel like something worth remembering.",
   "your laugh is genuinely one of my favorite sounds.",
@@ -419,7 +536,7 @@ function newCompliment(){
   document.getElementById('compliment-text').textContent = compliments[i];
 }
 newCompliment();
- 
+
 function popBalloon(el){
   if(el.classList.contains('popped')) return;
   el.classList.add('popped');
@@ -427,7 +544,7 @@ function popBalloon(el){
   setTimeout(() => el.textContent = '🎈', 600);
   setTimeout(() => el.classList.remove('popped'), 600);
 }
- 
+
 function confettiBlast(){
   const colors = ['#f43f5e','#fbbf24','#34d399','#60a5fa','#a78bfa','#f472b6'];
   for(let i = 0; i < 80; i++){
@@ -445,6 +562,3 @@ function confettiBlast(){
 </script>
 </body>
 </html>
- 
-
-
