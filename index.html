@@ -17,11 +17,16 @@
   }
   .wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
 
-  /* ===== HEART INTRO OVERLAY ===== */
+  /* ===== HEART INTRO OVERLAY WITH CAKE BACKGROUND ===== */
   .heart-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, #ffe0ec 0%, #fecaca 50%, #fbcfe8 100%);
+    background-image:
+      linear-gradient(135deg, rgba(255, 224, 236, 0.75) 0%, rgba(254, 202, 202, 0.7) 50%, rgba(251, 207, 232, 0.75) 100%),
+      url('https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,7 +41,7 @@
   .big-heart {
     font-size: 180px;
     animation: heartbeat 1.2s ease-in-out infinite;
-    filter: drop-shadow(0 8px 24px rgba(220, 38, 38, 0.4));
+    filter: drop-shadow(0 8px 24px rgba(220, 38, 38, 0.5));
     user-select: none;
   }
   @keyframes heartbeat {
@@ -46,19 +51,22 @@
     75% { transform: scale(1.15); }
   }
   .heart-message {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 700;
     color: #be123c;
     margin-top: 24px;
     text-align: center;
     animation: fadeInUp 1.5s ease 0.5s both;
     padding: 0 20px;
+    text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8);
   }
   .heart-sub {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 500;
     color: #9f1239;
     margin-top: 8px;
     animation: fadeInUp 1.5s ease 1s both;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.7);
   }
   .heart-btn {
     margin-top: 32px;
@@ -275,20 +283,10 @@ Happy Birthday. i love you. 💛
 </div>
 
 <script>
-// ===== INTRO HEART OVERLAY =====
 function dismissIntro(){
   document.getElementById('heart-overlay').classList.add('hidden');
 }
 
-// auto-dismiss after 6 seconds if user doesn't click
-setTimeout(() => {
-  const overlay = document.getElementById('heart-overlay');
-  if(overlay && !overlay.classList.contains('hidden')){
-    // don't auto-dismiss, let her enjoy it — just leave the button
-  }
-}, 6000);
-
-// ===== CONTINUOUS HEART SHOWER =====
 const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '♥️'];
 function spawnHeart(){
   const heart = document.createElement('div');
@@ -296,20 +294,17 @@ function spawnHeart(){
   heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
   heart.style.left = Math.random() * 100 + 'vw';
   heart.style.fontSize = (16 + Math.random() * 20) + 'px';
-  const duration = 5 + Math.random() * 5; // 5-10 seconds
+  const duration = 5 + Math.random() * 5;
   heart.style.animationDuration = duration + 's';
   heart.style.opacity = 0.6 + Math.random() * 0.4;
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), duration * 1000 + 200);
 }
-// spawn a heart every 400ms forever
 setInterval(spawnHeart, 400);
-// spawn a few right away so it doesn't start empty
 for(let i = 0; i < 8; i++){
   setTimeout(spawnHeart, i * 200);
 }
 
-// ===== MAIN PAGE LOGIC =====
 let opened = new Set();
 let bestieName = "bestie";
 
