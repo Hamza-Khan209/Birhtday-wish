@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FORMA — Personalized Diet Plans for Weight Loss & Weight Gain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #f4ede0;
+    --cream-soft: #faf6ed;
+    --cream-deep: #eadfc9;
+    --forest: #2c3a2a;
+    --forest-dark: #1a2418;
+    --terracotta: #c4633a;
+    --terracotta-dark: #a04d28;
+    --sage: #8a9b7a;
+    --charcoal: #1c1c1a;
+    --muted: #6b6b65;
+    --line: rgba(28,28,26,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'DM Sans',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:400;letter-spacing:-0.02em;line-height:1.05}
+  .serif-i{font-family:'Fraunces',serif;font-style:italic;font-weight:300}
+  .container{max-width:1240px;margin:0 auto;padding:0 32px}
+  .eyebrow{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.24em;
+    font-weight:500;
+    color:var(--terracotta);
+  }
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:20px 32px;
+    background:rgba(244,237,224,0.85);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1240px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo{
+    font-family:'Fraunces',serif;
+    font-size:24px;font-weight:500;
+    letter-spacing:0.12em;
+    color:var(--forest);
+  }
+  .logo span{color:var(--terracotta);font-style:italic;font-weight:300}
+  .nav-links{display:flex;gap:36px;list-style:none}
+  .nav-links a{
+    color:var(--charcoal);text-decoration:none;
+    font-size:14px;font-weight:500;
+    transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--terracotta)}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 24px;
+    border-radius:999px;
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;font-weight:500;
+    text-decoration:none;
+    cursor:pointer;border:none;
+    transition:all .25s;
+  }
+  .btn-primary{background:var(--forest);color:var(--cream-soft)}
+  .btn-primary:hover{background:var(--forest-dark);transform:translateY(-1px)}
+  .btn-secondary{background:transparent;color:var(--forest);border:1px solid var(--forest)}
+  .btn-secondary:hover{background:var(--forest);color:var(--cream-soft)}
+  .btn-terra{background:var(--terracotta);color:var(--cream-soft)}
+  .btn-terra:hover{background:var(--terracotta-dark);transform:translateY(-1px)}
+
+  /* HERO */
+  .hero{
+    padding:160px 0 100px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(48px,7vw,96px);
+    margin-bottom:32px;
+    color:var(--forest);
+  }
+  .hero h1 em{font-style:italic;color:var(--terracotta);font-weight:300}
+  .hero p.lead{
+    font-size:19px;
+    color:var(--muted);
+    max-width:520px;
+    margin-bottom:40px;
+  }
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    margin-bottom:28px;
+  }
+  .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--terracotta);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .hero-visual{
+    position:relative;height:560px;
+  }
+  .plate{
+    position:absolute;
+    width:380px;height:380px;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #f8f1e3 0%, #e6d8bd 100%);
+    box-shadow:0 30px 80px rgba(44,58,42,0.15), inset 0 0 0 1px rgba(255,255,255,0.4);
+    top:50%;left:50%;transform:translate(-50%,-50%);
+  }
+  .plate::after{
+    content:'';position:absolute;inset:30px;
+    border-radius:50%;
+    border:1px solid rgba(44,58,42,0.1);
+  }
+  .food-element{
+    position:absolute;border-radius:50%;
+  }
+  .f1{width:90px;height:90px;background:linear-gradient(135deg,#7a8f5c,#536a3e);top:30%;left:25%;}
+  .f2{width:70px;height:70px;background:linear-gradient(135deg,#c4633a,#9a4622);top:32%;right:22%;}
+  .f3{width:60px;height:60px;background:linear-gradient(135deg,#d4a574,#a87842);bottom:30%;left:33%;}
+  .f4{width:50px;height:50px;background:linear-gradient(135deg,#b8c49b,#8a9b7a);bottom:35%;right:30%;}
+  .leaf{
+    position:absolute;width:24px;height:60px;
+    background:var(--forest);
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    transform:rotate(-25deg);
+    top:42%;left:48%;
+  }
+
+  .floating-badge{
+    position:absolute;
+    background:var(--cream-soft);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 18px;
+    box-shadow:0 20px 50px rgba(28,28,26,0.08);
+    font-size:13px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .badge-1{top:8%;right:0;animation:float 4s ease-in-out infinite}
+  .badge-2{bottom:8%;left:-10px;animation:float 4s ease-in-out infinite .8s}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .badge-icon{
+    width:32px;height:32px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-weight:600;font-size:14px;
+  }
+  .badge-1 .badge-icon{background:rgba(196,99,58,0.15);color:var(--terracotta)}
+  .badge-2 .badge-icon{background:rgba(44,58,42,0.12);color:var(--forest)}
+  .badge strong{font-family:'Fraunces',serif;font-weight:500;font-size:15px;display:block;color:var(--forest)}
+  .badge small{color:var(--muted);font-size:11px}
+
+  /* TRUST BAR */
+  .trust{
+    padding:60px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:var(--cream-soft);
+  }
+  .trust-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:40px;
+    text-align:center;
+  }
+  .trust-num{
+    font-family:'Fraunces',serif;font-size:48px;font-weight:400;
+    color:var(--forest);
+    line-height:1;margin-bottom:8px;
+  }
+  .trust-num em{font-style:italic;color:var(--terracotta);font-weight:300}
+  .trust-label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em}
+
+  /* SECTION HEADERS */
+  section{padding:120px 0}
+  .section-head{margin-bottom:80px;max-width:760px}
+  .section-head h2{
+    font-size:clamp(40px,5vw,68px);
+    margin:18px 0 24px;
+    color:var(--forest);
+  }
+  .section-head h2 em{font-style:italic;color:var(--terracotta);font-weight:300}
+  .section-head p{font-size:18px;color:var(--muted);max-width:580px}
+
+  /* PROGRAMS */
+  .programs-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .program-card{
+    background:var(--cream-soft);
+    border-radius:24px;
+    padding:48px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+    transition:transform .3s, box-shadow .3s;
+  }
+  .program-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(28,28,26,0.08)}
+  .program-card.dark{background:var(--forest);color:var(--cream-soft);border-color:var(--forest)}
+  .program-card.dark .program-meta,.program-card.dark .program-feat{color:rgba(244,237,224,0.7)}
+  .program-card.dark .feat-bullet{background:var(--terracotta)}
+  .program-tag{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:999px;
+    background:rgba(196,99,58,0.15);
+    color:var(--terracotta);
+    font-size:11px;font-weight:600;
+    letter-spacing:0.14em;text-transform:uppercase;
+    margin-bottom:24px;
+  }
+  .program-card.dark .program-tag{background:rgba(244,237,224,0.12);color:var(--cream-soft)}
+  .program-card h3{font-size:42px;margin-bottom:14px}
+  .program-meta{color:var(--muted);margin-bottom:32px;font-size:15px}
+  .program-feats{list-style:none;margin-bottom:36px}
+  .program-feat{
+    display:flex;gap:14px;align-items:flex-start;
+    padding:12px 0;
+    color:var(--muted);
+    font-size:15px;
+    border-bottom:1px solid var(--line);
+  }
+  .program-card.dark .program-feat{border-color:rgba(244,237,224,0.1)}
+  .program-feat:last-child{border-bottom:none}
+  .feat-bullet{
+    width:6px;height:6px;border-radius:50%;background:var(--forest);
+    margin-top:9px;flex-shrink:0;
+  }
+  .program-deco{
+    position:absolute;right:-40px;top:-40px;
+    width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle, rgba(196,99,58,0.15), transparent 70%);
+  }
+
+  /* HOW IT WORKS */
+  .how{background:var(--cream-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .step{
+    padding:36px 28px;
+    border-radius:20px;
+    background:var(--cream);
+    position:relative;
+    transition:transform .3s;
+  }
+  .step:hover{transform:translateY(-4px)}
+  .step-num{
+    font-family:'Fraunces',serif;
+    font-size:64px;font-weight:300;font-style:italic;
+    color:var(--terracotta);
+    line-height:1;margin-bottom:24px;
+  }
+  .step h4{font-size:22px;margin-bottom:12px;color:var(--forest)}
+  .step p{font-size:14px;color:var(--muted)}
+
+  /* INCLUDED */
+  .included-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+  .included-list{list-style:none}
+  .included-list li{
+    padding:24px 0;
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:20px;
+    font-size:17px;color:var(--charcoal);
+  }
+  .included-icon{
+    width:44px;height:44px;border-radius:12px;
+    background:rgba(196,99,58,0.12);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    color:var(--terracotta);
+  }
+  .meal-preview{
+    background:var(--forest);
+    border-radius:24px;
+    padding:40px;
+    color:var(--cream-soft);
+    position:relative;
+  }
+  .meal-preview h4{font-size:28px;margin-bottom:8px;color:var(--cream-soft)}
+  .meal-preview .day{color:var(--terracotta);font-size:12px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:30px}
+  .meal-row{
+    padding:18px 0;
+    border-bottom:1px solid rgba(244,237,224,0.12);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .meal-row:last-child{border-bottom:none}
+  .meal-name{font-family:'Fraunces',serif;font-size:17px;font-weight:400}
+  .meal-name small{display:block;color:rgba(244,237,224,0.6);font-family:'DM Sans',sans-serif;font-size:12px;margin-top:4px}
+  .meal-cal{font-family:'Fraunces',serif;font-size:15px;color:var(--terracotta);font-style:italic}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .price-card{
+    background:var(--cream-soft);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:44px 36px;
+    position:relative;
+    transition:transform .3s, box-shadow .3s;
+  }
+  .price-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(28,28,26,0.08)}
+  .price-card.featured{
+    background:var(--forest);
+    color:var(--cream-soft);
+    border-color:var(--forest);
+    transform:scale(1.04);
+  }
+  .price-card.featured:hover{transform:scale(1.04) translateY(-6px)}
+  .popular{
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    background:var(--terracotta);color:var(--cream-soft);
+    padding:6px 16px;border-radius:999px;
+    font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;
+  }
+  .price-name{
+    font-family:'Fraunces',serif;font-size:24px;
+    margin-bottom:8px;
+  }
+  .price-desc{font-size:13px;color:var(--muted);margin-bottom:28px}
+  .price-card.featured .price-desc{color:rgba(244,237,224,0.7)}
+  .price-amount{
+    font-family:'Fraunces',serif;
+    font-size:64px;font-weight:400;
+    line-height:1;margin-bottom:4px;
+    color:var(--forest);
+  }
+  .price-card.featured .price-amount{color:var(--cream-soft)}
+  .price-amount sup{font-size:24px;font-weight:300;vertical-align:super;margin-right:4px;color:var(--muted)}
+  .price-card.featured .price-amount sup{color:rgba(244,237,224,0.6)}
+  .price-period{font-size:14px;color:var(--muted);margin-bottom:30px}
+  .price-card.featured .price-period{color:rgba(244,237,224,0.6)}
+  .price-feats{list-style:none;margin-bottom:32px}
+  .price-feats li{
+    padding:10px 0;font-size:14px;
+    display:flex;gap:12px;align-items:flex-start;
+    color:var(--charcoal);
+  }
+  .price-card.featured .price-feats li{color:var(--cream-soft)}
+  .price-check{
+    color:var(--terracotta);
+    flex-shrink:0;margin-top:2px;
+  }
+  .price-btn{
+    width:100%;justify-content:center;
+    padding:14px 24px;
+  }
+  .price-card .btn-primary{background:var(--forest);color:var(--cream-soft)}
+  .price-card.featured .btn-primary{background:var(--terracotta)}
+  .price-card.featured .btn-primary:hover{background:var(--terracotta-dark)}
+  .price-save{
+    display:inline-block;
+    background:rgba(196,99,58,0.15);
+    color:var(--terracotta);
+    padding:3px 10px;border-radius:6px;
+    font-size:11px;font-weight:600;
+    margin-left:8px;
+  }
+
+  /* TESTIMONIALS */
+  .testi{background:var(--cream-deep)}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .testi-card{
+    background:var(--cream-soft);
+    border-radius:20px;
+    padding:40px 32px;
+    border:1px solid var(--line);
+  }
+  .testi-stars{color:var(--terracotta);margin-bottom:20px;font-size:14px;letter-spacing:3px}
+  .testi-card blockquote{
+    font-family:'Fraunces',serif;font-size:20px;font-weight:400;
+    line-height:1.4;margin-bottom:28px;color:var(--forest);
+  }
+  .testi-author{display:flex;align-items:center;gap:14px}
+  .testi-avatar{
+    width:48px;height:48px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-weight:500;font-size:18px;
+    color:var(--cream-soft);
+  }
+  .av1{background:linear-gradient(135deg,#c4633a,#9a4622)}
+  .av2{background:linear-gradient(135deg,#2c3a2a,#536a3e)}
+  .av3{background:linear-gradient(135deg,#8a9b7a,#536a3e)}
+  .testi-info strong{display:block;font-weight:500;color:var(--forest)}
+  .testi-info small{color:var(--muted);font-size:13px}
+
+  /* COACH */
+  .coach-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;align-items:center}
+  .coach-img{
+    aspect-ratio:4/5;
+    border-radius:24px;
+    background:linear-gradient(135deg,#536a3e 0%,#2c3a2a 100%);
+    position:relative;
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .coach-img::before{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(196,99,58,0.3), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(138,155,122,0.25), transparent 50%);
+  }
+  .coach-monogram{
+    font-family:'Fraunces',serif;font-style:italic;
+    font-size:180px;font-weight:300;
+    color:rgba(244,237,224,0.85);
+    position:relative;z-index:1;
+  }
+  .coach-info h2{font-size:54px;margin:16px 0 24px;color:var(--forest)}
+  .coach-info h2 em{font-style:italic;color:var(--terracotta);font-weight:300}
+  .coach-bio{font-size:17px;color:var(--muted);margin-bottom:32px}
+  .coach-creds{display:flex;gap:32px;margin-top:40px;padding-top:36px;border-top:1px solid var(--line)}
+  .cred-num{font-family:'Fraunces',serif;font-size:36px;color:var(--forest)}
+  .cred-num em{color:var(--terracotta);font-style:italic;font-weight:300}
+  .cred-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em}
+
+  /* FAQ */
+  .faq{background:var(--cream-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .faq-list{max-width:860px;margin:0 auto}
+  details{
+    border-bottom:1px solid var(--line);
+    padding:28px 0;
+  }
+  details summary{
+    cursor:pointer;
+    font-family:'Fraunces',serif;font-size:22px;font-weight:400;
+    color:var(--forest);
+    display:flex;justify-content:space-between;align-items:center;
+    list-style:none;
+    transition:color .2s;
+  }
+  details summary::-webkit-details-marker{display:none}
+  details summary:hover{color:var(--terracotta)}
+  details summary::after{
+    content:'+';
+    font-size:28px;font-weight:300;
+    color:var(--terracotta);
+    transition:transform .3s;
+  }
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{margin-top:16px;color:var(--muted);font-size:16px;max-width:720px}
+
+  /* CTA */
+  .cta-section{
+    background:var(--forest);
+    color:var(--cream-soft);
+    text-align:center;
+    padding:140px 32px;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-section::before{
+    content:'';position:absolute;
+    width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle, rgba(196,99,58,0.2), transparent 70%);
+    top:-200px;right:-200px;
+  }
+  .cta-section::after{
+    content:'';position:absolute;
+    width:500px;height:500px;border-radius:50%;
+    background:radial-gradient(circle, rgba(138,155,122,0.15), transparent 70%);
+    bottom:-150px;left:-150px;
+  }
+  .cta-inner{position:relative;z-index:1;max-width:760px;margin:0 auto}
+  .cta-section h2{font-size:clamp(40px,6vw,80px);margin-bottom:24px}
+  .cta-section h2 em{font-style:italic;color:var(--terracotta);font-weight:300}
+  .cta-section p{font-size:19px;color:rgba(244,237,224,0.75);margin-bottom:40px;max-width:520px;margin-left:auto;margin-right:auto}
+
+  /* FOOTER */
+  footer{
+    background:var(--forest-dark);
+    color:rgba(244,237,224,0.6);
+    padding:80px 32px 40px;
+  }
+  .footer-grid{
+    max-width:1240px;margin:0 auto;
+    display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;
+    padding-bottom:60px;
+    border-bottom:1px solid rgba(244,237,224,0.1);
+  }
+  footer .logo{color:var(--cream-soft);margin-bottom:16px}
+  footer p{font-size:14px;max-width:340px;line-height:1.7}
+  footer h5{
+    color:var(--cream-soft);
+    font-family:'DM Sans',sans-serif;
+    font-size:13px;text-transform:uppercase;letter-spacing:0.14em;
+    margin-bottom:20px;font-weight:500;
+  }
+  footer ul{list-style:none}
+  footer ul li{margin-bottom:12px}
+  footer ul a{color:rgba(244,237,224,0.6);text-decoration:none;font-size:14px;transition:color .2s}
+  footer ul a:hover{color:var(--terracotta)}
+  .footer-bottom{
+    max-width:1240px;margin:30px auto 0;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:13px;
+    flex-wrap:wrap;gap:16px;
+  }
+
+  /* RESPONSIVE */
+  @media(max-width:960px){
+    .hero-grid,.included-grid,.coach-grid{grid-template-columns:1fr;gap:60px}
+    .hero-visual{height:420px}
+    .plate{width:300px;height:300px}
+    .programs-grid,.testi-grid,.pricing-grid{grid-template-columns:1fr;gap:20px}
+    .price-card.featured{transform:none}
+    .price-card.featured:hover{transform:translateY(-6px)}
+    .steps-grid{grid-template-columns:1fr 1fr;gap:16px}
+    .trust-grid{grid-template-columns:1fr 1fr;gap:32px}
+    .nav-links{display:none}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+    section{padding:80px 0}
+    .hero{padding:130px 0 60px}
+    .section-head{margin-bottom:50px}
+    .coach-creds{flex-wrap:wrap;gap:24px}
+  }
+
+  /* ENTRANCE ANIMATIONS */
+  .fade-up{animation:fadeUp .9s cubic-bezier(0.16,1,0.3,1) both}
+  .delay-1{animation-delay:.1s}
+  .delay-2{animation-delay:.25s}
+  .delay-3{animation-delay:.4s}
+  .delay-4{animation-delay:.55s}
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(30px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">FORMA<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#coach">About</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#pricing" class="btn btn-primary">Get Started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-eyebrow fade-up">
+        <span class="dot"></span>
+        <span class="eyebrow">Personalized Nutrition Coaching</span>
+      </div>
+      <h1 class="fade-up delay-1">Diet plans designed for <em>your</em> body, your goals.</h1>
+      <p class="lead fade-up delay-2">Whether you want to lose fat or build lean mass, get a custom-built meal plan, weekly check-ins, and a coach who actually listens. No fad diets. No cookie-cutter PDFs.</p>
+      <div class="hero-cta fade-up delay-3">
+        <a href="#pricing" class="btn btn-primary">View Subscription Plans</a>
+        <a href="#programs" class="btn btn-secondary">Explore Programs</a>
+      </div>
+    </div>
+    <div class="hero-visual fade-up delay-2">
+      <div class="plate">
+        <div class="food-element f1"></div>
+        <div class="food-element f2"></div>
+        <div class="food-element f3"></div>
+        <div class="food-element f4"></div>
+        <div class="leaf"></div>
+      </div>
+      <div class="floating-badge badge badge-1">
+        <div class="badge-icon">−12</div>
+        <div>
+          <strong>12 kg lost</strong>
+          <small>Sarah, 16 weeks</small>
+        </div>
+      </div>
+      <div class="floating-badge badge badge-2">
+        <div class="badge-icon">+8</div>
+        <div>
+          <strong>8 kg gained</strong>
+          <small>Ahmad, 20 weeks</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust" style="padding:60px 0">
+  <div class="container">
+    <div class="trust-grid">
+      <div>
+        <div class="trust-num">500<em>+</em></div>
+        <div class="trust-label">Clients Coached</div>
+      </div>
+      <div>
+        <div class="trust-num">94<em>%</em></div>
+        <div class="trust-label">Reach Their Goal</div>
+      </div>
+      <div>
+        <div class="trust-num">8<em>yrs</em></div>
+        <div class="trust-label">Of Experience</div>
+      </div>
+      <div>
+        <div class="trust-num">4.9<em>★</em></div>
+        <div class="trust-label">Average Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Our Programs</span>
+      <h2>Two paths, one <em>principle</em> — food that fits you.</h2>
+      <p>Pick the program that matches your goal. Each plan is built from scratch based on your body, schedule, food preferences, and culture.</p>
+    </div>
+    <div class="programs-grid">
+      <div class="program-card">
+        <div class="program-deco"></div>
+        <span class="program-tag">For Fat Loss</span>
+        <h3>Weight Loss Program</h3>
+        <p class="program-meta">Designed for sustainable fat loss — without starving, binging, or cutting out the foods you love.</p>
+        <ul class="program-feats">
+          <li class="program-feat"><span class="feat-bullet"></span>Calorie-controlled meal plans tailored to your TDEE</li>
+          <li class="program-feat"><span class="feat-bullet"></span>High-protein, satisfying meals (no rabbit-food salads)</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Weekly check-ins and macro adjustments</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Restaurant + travel eating strategies</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Sustainable habit coaching, not crash dieting</li>
+        </ul>
+        <a href="#pricing" class="btn btn-primary">Start Losing Weight →</a>
+      </div>
+      <div class="program-card dark">
+        <div class="program-deco"></div>
+        <span class="program-tag">For Muscle Gain</span>
+        <h3>Weight Gain Program</h3>
+        <p class="program-meta">For hard-gainers and anyone who wants to build lean mass without piling on fat. Strategic surplus, smart macros.</p>
+        <ul class="program-feats">
+          <li class="program-feat"><span class="feat-bullet"></span>Calorie-surplus plans calibrated to your build</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Optimized protein timing for muscle synthesis</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Calorie-dense meals for low-appetite eaters</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Smart supplementation guidance</li>
+          <li class="program-feat"><span class="feat-bullet"></span>Pre/post workout nutrition strategy</li>
+        </ul>
+        <a href="#pricing" class="btn btn-terra">Start Gaining Mass →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">How It Works</span>
+      <h2>From signup to <em>results</em> — here's the path.</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Tell us about you</h4>
+        <p>Fill out a detailed assessment — your goals, lifestyle, food preferences, allergies, and current habits.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Get your plan</h4>
+        <p>Within 48 hours, we deliver a fully personalized meal plan, grocery list, and macro targets.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Eat, track, check in</h4>
+        <p>Follow your plan with full coach access. Weekly check-ins keep you on track and accountable.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h4>Adjust & transform</h4>
+        <p>Your plan adapts every week based on your progress, feedback, and changing goals. Real results.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED + MEAL PREVIEW -->
+<section>
+  <div class="container">
+    <div class="included-grid">
+      <div>
+        <span class="eyebrow">What's Included</span>
+        <h2 style="font-size:54px;margin:16px 0 24px;color:var(--forest)">Everything you need, <em>nothing</em> you don't.</h2>
+        <ul class="included-list">
+          <li>
+            <div class="included-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h6l3-9 3 18 3-9h3"/></svg>
+            </div>
+            Custom calorie & macro calculations
+          </li>
+          <li>
+            <div class="included-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            7-day meal plans, refreshed weekly
+          </li>
+          <li>
+            <div class="included-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            Detailed grocery & shopping lists
+          </li>
+          <li>
+            <div class="included-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            Direct chat access to your coach
+          </li>
+          <li>
+            <div class="included-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            Weekly progress reviews & plan tweaks
+          </li>
+          <li>
+            <div class="included-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            </div>
+            Recipe library with 200+ meals
+          </li>
+        </ul>
+      </div>
+      <div class="meal-preview">
+        <div class="day">Sample · Day 4 · 1,850 kcal</div>
+        <h4>Wednesday's Plate</h4>
+        <div style="margin-top:24px">
+          <div class="meal-row">
+            <div class="meal-name">Breakfast<small>Greek yogurt bowl with berries & almonds</small></div>
+            <div class="meal-cal">420 kcal</div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-name">Snack<small>Apple slices with peanut butter</small></div>
+            <div class="meal-cal">210 kcal</div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-name">Lunch<small>Grilled chicken bowl, quinoa, roast veg</small></div>
+            <div class="meal-cal">580 kcal</div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-name">Snack<small>Cottage cheese with cucumber</small></div>
+            <div class="meal-cal">160 kcal</div>
+          </div>
+          <div class="meal-row">
+            <div class="meal-name">Dinner<small>Pan-seared salmon, sweet potato, greens</small></div>
+            <div class="meal-cal">480 kcal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--cream-deep);padding:120px 0">
+  <div class="container">
+    <div class="section-head" style="margin-left:auto;margin-right:auto;text-align:center">
+      <span class="eyebrow">Subscriptions</span>
+      <h2>Pick your <em>commitment</em>.</h2>
+      <p style="margin-left:auto;margin-right:auto">Same world-class coaching across every plan. Longer commitments unlock deeper savings and bonus features. Cancel anytime.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <h3 class="price-name">Starter</h3>
+        <p class="price-desc">Monthly · For trying it out</p>
+        <div class="price-amount"><sup>$</sup>49</div>
+        <div class="price-period">per month, billed monthly</div>
+        <ul class="price-feats">
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Personalized weekly meal plan</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom macros & calorie targets</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Grocery list each week</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Email support (48h response)</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Recipe library access</li>
+        </ul>
+        <a href="#" class="btn btn-primary price-btn">Start Starter</a>
+      </div>
+
+      <div class="price-card featured">
+        <span class="popular">Most Popular</span>
+        <h3 class="price-name">Pro</h3>
+        <p class="price-desc">Quarterly · Real transformation <span class="price-save">Save 20%</span></p>
+        <div class="price-amount"><sup>$</sup>39</div>
+        <div class="price-period">per month, billed $117 every 3 months</div>
+        <ul class="price-feats">
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Direct WhatsApp coach access</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Weekly video check-ins</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Plan adjustments every week</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Restaurant & travel guides</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Supplement recommendations</li>
+        </ul>
+        <a href="#" class="btn btn-primary price-btn">Go Pro</a>
+      </div>
+
+      <div class="price-card">
+        <h3 class="price-name">Elite</h3>
+        <p class="price-desc">Annual · Maximum results <span class="price-save">Save 35%</span></p>
+        <div class="price-amount"><sup>$</sup>32</div>
+        <div class="price-period">per month, billed $384 annually</div>
+        <ul class="price-feats">
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Everything in Pro</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Priority 24-hour response</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Monthly 1-on-1 video calls</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom workout pairing plans</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Quarterly body composition review</li>
+          <li><svg class="price-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Lifetime recipe vault</li>
+        </ul>
+        <a href="#" class="btn btn-primary price-btn">Choose Elite</a>
+      </div>
+
+    </div>
+    <p style="text-align:center;margin-top:36px;color:var(--muted);font-size:14px">
+      💳 All subscriptions include a 14-day money-back guarantee. Cancel anytime from your dashboard.
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Client Stories</span>
+      <h2>Real people, <em>real</em> transformations.</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"I lost 14kg in 5 months without ever feeling hungry. The plans actually fit my life — I work shifts and travel, and my coach adapted everything around me."</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar av1">SK</div>
+          <div class="testi-info">
+            <strong>Sarah K.</strong>
+            <small>Weight Loss · 14kg in 22 weeks</small>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"I'd struggled to gain weight my whole life. In 6 months I put on 9kg of mostly lean mass. The calorie-dense meals were the key — I just couldn't eat enough before."</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar av2">AM</div>
+          <div class="testi-info">
+            <strong>Ahmad M.</strong>
+            <small>Weight Gain · 9kg in 26 weeks</small>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"What I love is the coaching — it's not just a PDF. Every week we tweak things. After 3 months I'm down 8kg and finally understand how to eat."</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar av3">PR</div>
+          <div class="testi-info">
+            <strong>Priya R.</strong>
+            <small>Weight Loss · 8kg in 12 weeks</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COACH -->
+<section id="coach">
+  <div class="container">
+    <div class="coach-grid">
+      <div class="coach-img">
+        <span class="coach-monogram">F</span>
+      </div>
+      <div class="coach-info">
+        <span class="eyebrow">About Your Coach</span>
+        <h2>Nutrition science meets <em>real</em> life.</h2>
+        <p class="coach-bio">I'm a certified clinical nutritionist with 8 years of experience helping people transform their bodies through food. I don't believe in extreme diets or magic fixes. My approach is built on three things: nutritional science, your individual context, and consistent small adjustments.</p>
+        <p class="coach-bio">Every plan I write is built from scratch around <em class="serif-i">your</em> body, your culture, your schedule, and your taste. No two clients eat the same thing.</p>
+        <a href="#pricing" class="btn btn-primary">Work With Me →</a>
+        <div class="coach-creds">
+          <div>
+            <div class="cred-num">8<em>+</em></div>
+            <div class="cred-label">Years Coaching</div>
+          </div>
+          <div>
+            <div class="cred-num">3<em>×</em></div>
+            <div class="cred-label">Certifications</div>
+          </div>
+          <div>
+            <div class="cred-num">500<em>+</em></div>
+            <div class="cred-label">Plans Written</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="faq">
+  <div class="container">
+    <div class="section-head" style="margin-left:auto;margin-right:auto;text-align:center">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions, <em>answered</em>.</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>How is my diet plan created?</summary>
+        <p>After you sign up and complete a detailed assessment (goals, weight, height, activity, food preferences, allergies, schedule), I personally write your plan within 48 hours. It's not algorithm-generated — every meal is chosen with your specific situation in mind.</p>
+      </details>
+      <details>
+        <summary>Can I cancel my subscription anytime?</summary>
+        <p>Yes. All plans can be canceled from your dashboard at any time. If you cancel within the first 14 days and aren't satisfied, you'll get a full refund — no questions asked.</p>
+      </details>
+      <details>
+        <summary>Do you accommodate dietary restrictions and cultural foods?</summary>
+        <p>Absolutely. Whether you're vegetarian, vegan, halal, kosher, gluten-free, lactose-intolerant, or follow a regional cuisine (South Asian, Mediterranean, etc.), your plan is built around foods you actually eat and love.</p>
+      </details>
+      <details>
+        <summary>What if I'm not seeing results?</summary>
+        <p>That's exactly what weekly check-ins are for. Plans are dynamic — we adjust calories, macros, and meal structure based on your weekly progress, energy, and feedback. Plateaus get addressed, not ignored.</p>
+      </details>
+      <details>
+        <summary>Do I need to count calories myself?</summary>
+        <p>No. Your plan tells you exactly what to eat and in what portion. We do the math; you do the eating. You can use a tracking app if you enjoy it, but it's not required.</p>
+      </details>
+      <details>
+        <summary>What's the difference between the Pro and Elite plans?</summary>
+        <p>Pro gives you weekly coaching with WhatsApp access and video check-ins. Elite adds monthly 1-on-1 video calls, custom workout pairings, body composition reviews, and priority response. Elite is best if you want maximum coaching depth.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <span class="eyebrow" style="color:var(--terracotta)">Your Move</span>
+    <h2 style="margin-top:18px">The diet that works is the one <em>built for you</em>.</h2>
+    <p>Stop guessing. Stop starting over every Monday. Get a plan, a coach, and a system that actually fits the life you live.</p>
+    <a href="#pricing" class="btn btn-terra" style="padding:16px 32px;font-size:15px">Start Your Subscription Today →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a href="#" class="logo">FORMA<span>.</span></a>
+      <p>Personalized nutrition coaching for people who want results without the noise. Built on science, tailored to life.</p>
+    </div>
+    <div>
+      <h5>Programs</h5>
+      <ul>
+        <li><a href="#programs">Weight Loss</a></li>
+        <li><a href="#programs">Weight Gain</a></li>
+        <li><a href="#pricing">Subscriptions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#coach">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 FORMA Nutrition. All rights reserved.</span>
+    <span>Made with care — not algorithms.</span>
+  </div>
+</footer>
+
+</body>
+</html>
